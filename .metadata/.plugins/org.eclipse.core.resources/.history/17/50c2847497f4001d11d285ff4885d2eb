@@ -1,0 +1,4 @@
+@RestControllerAdvice
+public class StudentDetailsExceptions {
+
+}

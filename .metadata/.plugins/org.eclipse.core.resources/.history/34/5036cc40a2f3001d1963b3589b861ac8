@@ -1,0 +1,19 @@
+package com.Product.Controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.Product.Entity.Products;
+
+@RestController
+public class ProductController {
+	@Autowired
+	ProductService proSer;
+	@PostMapping(value="/addProduct")
+	public String addProduct(@RequestBody Products p) {
+		return proSer.addProduct(p);
+	}
+
+}

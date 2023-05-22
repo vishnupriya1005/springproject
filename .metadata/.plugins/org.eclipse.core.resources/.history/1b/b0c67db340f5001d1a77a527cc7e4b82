@@ -1,0 +1,19 @@
+package com.StudentResults.Controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.StudentResults.Entity.Results;
+
+@RestController
+public class StudentResultsController {
+@Autowired 
+StudentResultsService rsSer;
+@PostMapping("/setResults")
+public String setResults(@RequestBody Results res) {
+	return rsSer.setResults(res);
+}
+
+}

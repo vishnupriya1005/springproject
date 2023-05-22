@@ -1,0 +1,5 @@
+package com.ForObject;
+@RestController
+public class ForObjectController {
+@Autowired
+}

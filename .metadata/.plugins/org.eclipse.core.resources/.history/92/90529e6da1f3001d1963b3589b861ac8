@@ -1,0 +1,5 @@
+package com.Product.Repository;
+
+public class ProductRepository {
+
+}

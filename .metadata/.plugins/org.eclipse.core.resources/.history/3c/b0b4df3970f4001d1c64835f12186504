@@ -1,0 +1,21 @@
+package com.UseProducts;
+
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+
+
+@SpringBootApplication
+public class UseProductsApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(UseProductsApplication.class, args);
+	}
+@Bean
+public UseProductsApplication UseProducts(){
+	return new UseProductsApplication();
+}
+
+}

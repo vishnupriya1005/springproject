@@ -1,0 +1,7 @@
+package com.StudentDetails.Exceptions;
+
+public class AgeNotFoundException extends Exception {
+	public AgeNotFoundException() {
+		super("not eligible");
+	}
+}

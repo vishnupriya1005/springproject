@@ -1,0 +1,38 @@
+package com.StudentDetails.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.StudentDetails.Dao.StudentDetailsDao;
+import com.StudentDetails.Entity.StudentDetails;
+import com.onesoft.Employee.AgeNotFoundException;
+
+@Service
+public class StudentDetailsService {
+	@Autowired
+	StudentDetailsDao stdDao;
+
+	public String addStudentDetails(StudentDetails sd) {
+		return stdDao.addStudentDetails(sd);
+	}
+
+	public String addStudentListDetails(List<StudentDetails> sd) {
+		return stdDao.addStudentListDetails(sd);
+	}
+
+	public String updateStudentDetails(StudentDetails id) {
+		return stdDao.updateStudentDetails(id);
+	}
+
+	public String getAge(List<StudentDetails> sd) throws AgeNotFoundException {
+		List<StudentDetails> age18below = sd.stream().filter(x -> x.getAge() < 18).collect(Collectors.toList());
+		if (age18below.isEmpty() == true) {
+			return stdDao.getAge(sd);
+		} else {
+			throw new AgeNotFoundException("age error");
+		}
+	}
+}

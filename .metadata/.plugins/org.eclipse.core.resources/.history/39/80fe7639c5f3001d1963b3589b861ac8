@@ -1,0 +1,39 @@
+package com.Gst.Controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.Gst.Entity.Gst;
+import com.Gst.Service.GstService;
+
+@RestController	
+public class GstController {
+	@Autowired
+	GstService gSer;
+	@PostMapping(value="/addGst")
+	public String addGst(@RequestBody Gst g) {
+		return gSer.addGst(g);
+	}
+    @PostMapping(value="/addGstList")
+    public String addGstList(@RequestBody List<Gst> g) {
+    	return gSer.addGstList(g);
+    }
+    @GetMapping(value="/getByHsn/{hsn}")
+    public List<Gst> getByHsn(@PathVariable int hsn){
+    	return gSer.getByHsn(hsn);
+    }
+    @GetMapping(value="/getTaxByHsn/{hsn}")
+    public int getTaxByHsn(@PathVariable int hsn) {
+    	return gSer.getTaxByHsn(hsn);
+    }
+    @GetMapping(value="/getDiscountByHsn/{hsn}")
+    public int getDiscountByHsn(@PathVariable int hsn) {
+    	return gSer.getDiscountByHsn(hsn);
+    }
+}

@@ -1,0 +1,26 @@
+package com.Product.Controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.Product.Entity.Products;
+import com.Product.Service.ProductService;
+
+@RestController
+public class ProductController {
+	@Autowired
+	ProductService proSer;
+	@PostMapping(value="/addProduct")
+	public String addProduct(@RequestBody Products p) {
+		return proSer.addProduct(p);
+	}
+	@PostMapping(value="/addProductList")
+	public String addProductList(@RequestBody List<Products> p) {
+		return proSer.addProductList(p);
+	}
+
+}

@@ -1,0 +1,110 @@
+package com.StudentResults.Controller;
+
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import com.StudentResults.StudentMark;
+import com.StudentResults.Students;
+import com.StudentResults.Entity.Results;
+import com.StudentResults.Service.StudentResultsService;
+
+@RestController
+public class StudentResultsController {
+@Autowired
+RestTemplate rt;
+@Autowired
+StudentResultsService srSer;
+
+@PostMapping("/findResults")
+public String findResults() {
+	String url1 = "http://localhost:8080/getStudentsDetails";
+	ResponseEntity<List<Students>> studentResponse = rt.exchange(url1, HttpMethod.GET, null,
+			new ParameterizedTypeReference<List<Students>>() {
+			});
+	List<Students> stDet = studentResponse.getBody();
+	List<Results> resultsDetails = new ArrayList<>();
+	
+	for (Students x : stDet) {
+		String url2 = "http://localhost:8081/getMarkSheetDetailByRoll/";
+		ResponseEntity<StudentMark> markResponse = rt.exchange(url2 + x.getRollNumber(), HttpMethod.GET, null,
+				new ParameterizedTypeReference<StudentMark>() {});
+		StudentMark marksheet = markResponse.getBody();
+		int id=x.getId();
+		int rollNumber = x.getRollNumber();
+		String name = x.getName();
+		int overAll = marksheet.getSem1Total() + marksheet.getSem2Total();
+		int total = overAll / 2;
+		int percentage = total;
+		if (x.getAttendance() > 90) {
+			total += 5;
+			percentage = total;
+			if (total > 100) {
+				total = 100;
+			}
+		}
+		Results resu = new Results();
+		resu.setRollNumber(rollNumber);
+		resu.setName(name);
+		resu.setTotalMarks(total);
+		resu.setPercentage(percentage);
+		resultsDetails.add(resu);
+		resultsDetails.add(resu);
+	}
+	return srSer.findResults(); 
+}
+@GetMapping("/getTopper")
+public Results getTopper() {
+	String url1 = "http://localhost:8082/getFinalMarks";
+	ResponseEntity<List<ResultsEntity>> resultsResponse = rt.exchange(url1, HttpMethod.GET, null,
+			new ParameterizedTypeReference<List<ResultsEntity>>() {
+			});
+	List<ResultsEntity> allRes = resultsResponse.getBody();
+
+	ResultsEntity topper = allRes.stream().max(Comparator.comparing(ResultsEntity::getTotalMarks)).get();
+	return topper;
+
+}
+@GetMapping("/getThreeToppers")
+public List<ResultsEntity> getThreeToppers() {
+	String url1 = "http://localhost:8082/getFinalMarks";
+	ResponseEntity<List<ResultsEntity>> resultsResponse = rt.exchange(url1, HttpMethod.GET, null,
+			new ParameterizedTypeReference<List<ResultsEntity>>() {
+			});
+	List<ResultsEntity> allRes = resultsResponse.getBody();
+
+	List<ResultsEntity> topThree = allRes.stream()
+			.sorted(Comparator.comparing(ResultsEntity::getTotalMarks).reversed()).limit(3)
+			.collect(Collectors.toList());
+
+	return topThree;
+}
+
+@GetMapping("/getStudentsByRange/{a}/{b}")
+public List<ResultsEntity> getStudentsByRange(@PathVariable int a, @PathVariable int b) {
+	String url1 = "http://localhost:8082/getFinalMarks";
+	ResponseEntity<List<ResultsEntity>> resultsResponse = rt.exchange(url1, HttpMethod.GET, null,
+			new ParameterizedTypeReference<List<ResultsEntity>>() {
+			});
+	List<ResultsEntity> allRes = resultsResponse.getBody();
+	
+
+	List<ResultsEntity> byRange = allRes.stream().filter(x -> x.getTotalMarks() > a && x.getTotalMarks() < b)
+			.collect(Collectors.toList());
+
+
+	return byRange;
+}
+

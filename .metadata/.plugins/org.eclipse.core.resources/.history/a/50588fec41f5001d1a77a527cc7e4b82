@@ -1,0 +1,5 @@
+package com.StudentResults.Repository;
+
+public interface StudentResultsRepository {
+
+}

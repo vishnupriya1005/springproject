@@ -1,0 +1,8 @@
+package com.StudentResults.Entity;
+@Entity
+@Table(name="Results")
+public class Results {
+@Id
+@GeneratedValue(strategy=GenerationType.IDENTITY)
+
+}

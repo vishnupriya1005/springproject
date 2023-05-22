@@ -1,0 +1,27 @@
+package com.UseProducts;
+
+import java.util.List;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
+@SpringBootApplication
+public class UseProductsApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(UseProductsApplication.class, args);
+	}
+@Bean
+public UseProductsApplication UseProducts(){
+	return new UseProductsApplication();
+}
+public ResponseEntity<Integer> exchange(String string, HttpMethod get, Object object, ParameterizedTypeReference<List<com.UseProducts.UseProducts>> parameterizedTypeReference) {
+	// TODO Auto-generated method stub
+	return null;
+}
+}

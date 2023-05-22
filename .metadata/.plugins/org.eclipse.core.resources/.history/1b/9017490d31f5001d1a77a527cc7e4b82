@@ -1,0 +1,8 @@
+package com.onesoft.Employee;
+
+public class AgeNotFoundException extends Exception {
+public AgeNotFoundException() {
+	super();
+}
+	
+}

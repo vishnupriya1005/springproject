@@ -1,0 +1,28 @@
+package com.StudentResults.Controller;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import com.StudentResults.StudentMark;
+import com.StudentResults.Students;
+import com.StudentResults.Entity.Results;
+import com.StudentResults.Service.StudentResultsService;
+
+@RestController
+public class StudentResultsController {
+@Autowired
+RestTemplate rt;
+@Autowired
+StudentResultsService srSer;
+@PostMapping("/findResults")
+public String findResults() {
+

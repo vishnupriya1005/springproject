@@ -1,0 +1,22 @@
+package com.StudentDetails.Dao;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.StudentDetails.Entity.StudentDetails;
+import com.StudentDetails.Repository.StudentDetailsRepository;
+
+@Repository
+public class StudentDetailsDao {
+@Autowired 
+StudentDetailsRepository stdRepo;
+public String addStudentDetails(StudentDetails sd) {
+	stdRepo.save(sd);
+	return "Student details added successfully";
+}
+public String getAge(StudentDetails sd) {
+	 stdRepo.save(sd);
+	 return 
+	
+}
+}

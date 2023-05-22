@@ -1,0 +1,63 @@
+package com.StudentResults.Controller;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import com.StudentResults.Entity.Results;
+import com.StudentResults.Service.StudentResultsService;
+
+@RestController
+public class StudentResultsController {
+@Autowired
+RestTemplate rt;
+@Autowired
+StudentResultsService srSer;
+@PostMapping("/findResults")
+public String findResults() {
+	String url1 = "http://localhost:8080/getStudentsDetails";
+	ResponseEntity<List<Student>> studentResponse = rt.exchange(url1, HttpMethod.GET, null,
+			new ParameterizedTypeReference<List<Student>>() {
+			});
+	List<Student> stDet = studentResponse.getBody();
+	List<ResultsEntity> resultsDetails = new ArrayList<>();
+	
+	for (Student x : stDet) {
+		String url2 = "http://localhost:8081/getMarkSheetDetailByRoll/";
+		ResponseEntity<StudentMarkSheet> markResponse = rt.exchange(url2 + x.getRollNumber(), HttpMethod.GET, null,
+				new ParameterizedTypeReference<StudentMarkSheet>() {});
+		StudentMarkSheet marksheet = markResponse.getBody();
+		int id=x.getId();
+		int rollNumber = x.getRollNumber();
+		String name = x.getName();
+		int overAll = marksheet.getSem1Total() + marksheet.getSem2Total();
+		int total = overAll / 2;
+		int percentage = total;
+		if (x.getAttendance() > 90) {
+			total += 5;
+			percentage = total;
+			if (total > 100) {
+				total = 100;
+			}
+		}
+		ResultsEntity resu = new ResultsEntity();
+		resu.setRollNumber(rollNumber);
+		resu.setName(name);
+		resu.setTotalMarks(total);
+		resu.setPercentage(percentage);
+		resultsDetails.add(resu);
+		resultsDetails.add(resu);
+	}
+	return rs.findResults(resultsDetails); 
+}
+
+}

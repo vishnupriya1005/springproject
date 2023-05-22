@@ -1,0 +1,16 @@
+package com.Gst.Repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.Gst.Entity.Gst;
+
+public interface GstRepository extends JpaRepository<Gst,Integer> {
+@Query(value="select * from products.gst where hsn = ?",nativeQuery=true)
+public List<Gst> getByHsn(int hsn);
+
+@Query(value="select tax from products.gst where hsn = ?",nativeQuery=true)
+public int getTaxByHsn(int hsn);
+}

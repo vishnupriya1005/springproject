@@ -1,0 +1,12 @@
+package com.StudentDetails.Repository;
+
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.StudentDetails.Entity.StudentDetails;
+
+public interface StudentDetailsRepository extends JpaRepository<StudentDetails,Integer> {
+	@Query(value = "select * from student_details.student where age = ?", nativeQuery = true)
+	public String getAge();
+}

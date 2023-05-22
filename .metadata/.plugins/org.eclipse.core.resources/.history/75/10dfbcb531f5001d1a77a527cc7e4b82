@@ -1,0 +1,114 @@
+package com.onesoft;
+
+//public class Summa {
+//	 public class StudentAgeIsBelow18 extends Exception {
+//		public StudentAgeIsBelow18(String val) {
+//			super(val);
+//		}
+
+//	}
+//	@RestControllerAdvice
+//	public class StudentException {
+//
+//
+//			@org.springframework.web.bind.annotation.ExceptionHandler(StudentAgeIsBelow18.class)
+//			public ResponseEntity<Object> ageExceptionHandler(){
+//				return new ResponseEntity<Object>("Below 18 age found",HttpStatus.BAD_REQUEST);
+//			}
+//	}
+// @RestController
+//	public class StudentController {
+//		
+//		@Autowired
+//		StudentService studSer;
+//		
+//		@PostMapping(value ="/setStudent")
+//		public String setStudent(@RequestBody List<Student> det) throws StudentAgeIsBelow18 {
+//			return studSer.setStudent(det);
+//		}
+//
+//	}
+//	@Service
+//	public class StudentService {
+//
+//		@Autowired
+//		StudentDao studDao;
+//
+//		public String setStudent(List<Student> det) throws StudentAgeIsBelow18 {
+//		
+//			
+//			List<Student> below18Age=det.stream().filter(x->x.getAge()<18).collect(Collectors.toList());
+//			
+//			if(below18Age.isEmpty()) {
+//				return studDao.setStudent(det);
+//			}
+//			else {
+//				throw new StudentAgeIsBelow18("Age error");
+//			}
+//			
+//			
+//
+//		}
+//			
+//				
+//	}
+	 @Repository
+	public class StudentDao {
+
+		@Autowired
+		StudentRepository studRepo;
+
+		public String setStudent(List<Student> det) throws StudentAgeIsBelow18 {
+			studRepo.saveAll(det);
+			return "Save Succesfully";
+		
+		}
+
+	}
+ @RestController
+	public class StudentMarkSheetController {
+		
+		@Autowired 
+		StudentMarkSheetService stdSer;
+		
+		@PostMapping(value ="/setMark")
+		public String setMark(@RequestBody List<StudentMarkSheet> mark) {
+			return stdSer.setMark(mark);
+		}
+
+	}
+	
+	 @Service
+	public class StudentMarkSheetService {
+		@Autowired 
+		StudentMarkSheetDao stdDao;
+
+		public String setMark(List<StudentMarkSheet> mark) {
+			
+			for(StudentMarkSheet x : mark) {
+			int total1=	x.getSem1Practicals()+x.getSem1Theory();
+			x.setSem1Toatl(total1);
+			
+			int total2 = x.getSem2Practicals()+x.getSem2Theory();
+			x.setSem2Total(total2);
+			}
+			
+			return stdDao.setMark(mark) ;
+		}
+
+	}
+	 @Repository
+	public class StudentMarkSheetDao {
+		
+		@Autowired
+		StudentMarkSheetRepository stdRepo;
+		
+		public String setMark(List<StudentMarkSheet> mark) {
+			stdRepo.saveAll(mark);
+			
+			return "Save Successfully";
+		}
+
+	}
+	
+}

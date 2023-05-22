@@ -1,0 +1,5 @@
+package com.StudentResults.Entity;
+
+public class StudentResultsEntity {
+
+}

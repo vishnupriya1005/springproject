@@ -1,0 +1,77 @@
+package com.StudentResults.Controller;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import com.StudentResults.StudentMark;
+import com.StudentResults.Students;
+import com.StudentResults.Entity.Results;
+import com.StudentResults.Service.StudentResultsService;
+
+@RestController
+public class StudentResultsController {
+@Autowired
+RestTemplate rt;
+@Autowired
+StudentResultsService srSer;
+@PostMapping("/findResults")
+public String findResults() {
+	String url1 = "http://localhost:8080/getstudentdetails";
+	ResponseEntity<List<Students>> r1 = rt.exchange(url1, HttpMethod.GET, null,
+			new ParameterizedTypeReference<List<Students>>() {
+			});
+	List<Students> b1=r1.getBody();
+	String url2 = "http://localhost:8081/getmarksheetDetail";
+	ResponseEntity<List<StudentMark>> r2 = rt.exchange(url2, HttpMethod.GET, null,
+			new ParameterizedTypeReference<List<StudentMark>>() {
+			});
+	List<StudentMark> b2=r2.getBody();
+	
+	List<Results> res=new ArrayList<>();
+	for(Students s: b1) {
+		Results r= new Results();
+		r.setName(s.getName());
+		r.setRollNumber(s.getRollNumber());
+		int attendance=s.getAttendance();
+		int totalMarks=0;
+		int percen=0;
+		int sturoll=s.getRollNumber();
+		for(StudentMark m:b2) {
+			int marroll=m.getRollNumber();
+			if(sturoll==marroll) {
+			 totalMarks=m.getSem1Total()+m.getSem2Total();
+			}
+			percen=totalMarks/12;
+		}
+		if(attendance>=90&&attendance<=95) {
+			percen=percen+5;
+		}
+		else if(attendance==96) {
+			percen=percen+4;
+		}else if(attendance==97) {
+			percen=percen+3;
+		}else if(attendance==98) {
+			percen=percen+2;
+		}else if(attendance==99) {
+			percen=percen+1;
+		} 
+		
+				r.setTotalMarks(totalMarks);
+				r.setPercentage(percen);
+			  res.add(r);
+		}
+		
+		return re.setAllResult(res);
+}
+
+}
+

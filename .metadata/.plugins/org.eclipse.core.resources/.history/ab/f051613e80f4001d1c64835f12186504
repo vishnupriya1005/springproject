@@ -1,0 +1,13 @@
+package com.ForObject;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ForObjectApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ForObjectApplication.class, args);
+	}
+
+}

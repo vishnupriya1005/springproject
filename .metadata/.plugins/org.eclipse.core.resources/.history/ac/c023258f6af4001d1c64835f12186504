@@ -1,0 +1,32 @@
+package com.UseProducts;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+
+@RestController
+public class UseProductsController {
+@Autowired
+UseProductsApplication up;
+@GetMapping(value="/getNetPrice")
+public List<Integer> getNetPrice(){
+	String url1="http://localhost:8080/addListPro";
+	String url2="http://localhost:8082/getTaxByHsn/ ";
+	ResponseEntity<List<UseProducts>> response1=up.exchange(url1, HttpMethod.GET,null,new ParameterizedTypeReference<List<UseProducts>>() {});
+	List<UseProducts> products=response1.getBody();
+	List<Integer> taxes=new ArrayList<>();
+	products.forEach(i->{
+		ResponseEntity<Integer> response2=up.exchange(url2+i.getHsn(),HttpMethod.GET,null,Integer.class);
+		int t=response2.getBody();
+		taxes.add(i.getPrice()+(i.getPrice()*t/100));
+	});
+	return taxes;
+}
+}

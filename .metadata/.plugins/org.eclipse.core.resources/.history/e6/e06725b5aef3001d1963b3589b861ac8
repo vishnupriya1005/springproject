@@ -1,0 +1,20 @@
+package com.Gst.Controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.Gst.Entity.Gst;
+import com.Gst.Service.GstService;
+
+@RestController	
+public class GstController {
+	@Autowired
+	GstService gSer;
+	@PostMapping(value="/addGst")
+	public String addGst(@RequestBody Gst g) {
+		return gSer.addGst(g);
+	}
+
+}

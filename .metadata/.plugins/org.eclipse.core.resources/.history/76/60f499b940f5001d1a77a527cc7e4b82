@@ -1,0 +1,38 @@
+package com.StudentDetails.Dao;
+
+
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.StudentDetails.Entity.StudentDetails;
+import com.StudentDetails.Repository.StudentDetailsRepository;
+import com.onesoft.Employee.AgeNotFoundException;
+
+
+@Repository
+public class StudentDetailsDao {
+@Autowired 
+StudentDetailsRepository stdRepo;
+public String addStudentDetails(StudentDetails sd) {
+	stdRepo.save(sd);
+	return "Student details added successfully";
+}
+public String addStudentListDetails(List<StudentDetails> sd){
+	stdRepo.saveAll(sd);
+	return "Student details list added successfully";
+}
+public String updateStudentDetails(StudentDetails id) {
+	stdRepo.save(id);
+	return "updated successfully";
+}
+public String getAge(List<StudentDetails> sd) throws AgeNotFoundException {
+		stdRepo.saveAll(sd);
+		return "saved";
+		}
+		
+}
+
+
